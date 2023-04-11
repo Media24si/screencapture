@@ -76,8 +76,12 @@ function takeScreenshot(argv) {
       waitUntil: 'networkidle0',
     })
 
-    await page.waitForSelector('.qc-cmp2-summary-buttons', { visible: true })
-    await page.click('.qc-cmp2-summary-buttons > button[mode="primary"]')
+    try {
+      await page.waitForSelector('.qc-cmp2-summary-buttons', { visible: true, timeout: 3000 })
+      await page.click('.qc-cmp2-summary-buttons > button[mode="primary"]')
+    } catch (error) {
+      console.error('No CMP found. Skipping click...');
+    }
 
     await page.screenshot({
       path: path
